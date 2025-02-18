@@ -25,16 +25,13 @@ public class PoiUtil {
         fos.close();
     }
 
-    public static  <T> void saveListToExcel(String filePath, List<T> list, Class<T> clazz) throws Exception {
+    public static <T> void saveListToExcel(String filePath, List<T> list, Class<T> clazz) throws Exception {
         FileOutputStream fos = new FileOutputStream(filePath);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(clazz.getName());
         Field[] fields = clazz.getDeclaredFields();
         HSSFRow row = sheet.createRow(0);
         for (int j = 0; j < fields.length; j++) {
-            TableField flag = fields[j].getAnnotation(TableField.class);
-            if (flag != null)
-                continue;
             HSSFCell cell = row.createCell(j);
             cell.setCellValue(fields[j].getName());
         }
@@ -43,9 +40,6 @@ public class PoiUtil {
             row = sheet.createRow(i);
             for (int j = 0; j < fields.length; j++) {
                 Field field = fields[j];
-                TableField flag = field.getAnnotation(TableField.class);
-                if (flag != null)
-                    continue;
                 String name = field.getName();
                 char c = name.charAt(0);
                 if (c >= 'a' && c <= 'z')
@@ -61,18 +55,14 @@ public class PoiUtil {
         fos.close();
     }
 
-    public static  <T> List<T> getListFromExcel(String filePath, Class<T> clazz) throws Exception {
+    public static <T> List<T> getListFromExcel(String filePath, Class<T> clazz) throws Exception {
         FileInputStream fis = new FileInputStream(filePath);
         HSSFWorkbook workbook = new HSSFWorkbook(fis);
         HSSFSheet sheet = workbook.getSheetAt(0);
         List<T> res = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         List<Field> fs = new ArrayList<>();
-        int len = 0;
-        for (Field field : fields) {
-            TableField tableField = field.getAnnotation(TableField.class);
-            len += tableField == null ? 1 : 0;
-        }
+        int len = fields.length;
         HSSFRow row = sheet.getRow(0);
         for (int j = 0; j < len; j++) {
             fs.add(clazz.getDeclaredField(row.getCell(j).getStringCellValue()));
@@ -112,6 +102,8 @@ public class PoiUtil {
     }
 
     private static void setVal(HSSFWorkbook workbook, HSSFCell cell, Object val) {
+        if (val == null)
+            return;
         HSSFCellStyle cellStyle = workbook.createCellStyle();
         HSSFCreationHelper creationHelper = workbook.getCreationHelper();
         if (val instanceof Date) {

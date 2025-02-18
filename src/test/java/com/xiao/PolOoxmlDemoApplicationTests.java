@@ -7,7 +7,6 @@ import com.xiao.mapper.UserMapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.usermodel.CellType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -40,12 +39,9 @@ class PolOoxmlDemoApplicationTests {
 
     @Test
     void main() throws Exception {
-        String filePath = "D:\\bak\\test.xls";
+        String filePath = "D:\\bak\\test1.xls";
         List<User> users = userMapper.selectList(new LambdaQueryWrapper<>());
         saveListToExcel(filePath, users, User.class);
-
-        List<User> users1 = getListFromExcel(filePath, User.class);
-        System.out.println(users1);
     }
 
     @Test
