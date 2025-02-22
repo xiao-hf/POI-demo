@@ -106,7 +106,6 @@ public class ExcelUtil {
                 res.add(t);
             }
             workbook.close();
-            fis.close();
             return res;
         } catch (Exception e) {
             throw new RuntimeException(e);
