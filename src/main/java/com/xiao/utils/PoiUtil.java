@@ -67,51 +67,55 @@ public class PoiUtil {
         }
     }
 
-    public static <T> List<T> getListFromExcel(String filePath, Class<T> clazz) throws Exception {
-        FileInputStream fis = new FileInputStream(filePath);
-        HSSFWorkbook workbook = new HSSFWorkbook(fis);
-        HSSFSheet sheet = workbook.getSheetAt(0);
-        List<T> res = new ArrayList<>();
-        Field[] fields = clazz.getDeclaredFields();
-        List<Field> fs = new ArrayList<>();
-        int len = fields.length;
-        HSSFRow row = sheet.getRow(0);
-        for (int j = 0; j < len; j++) {
-            sheet.setColumnWidth(j, 15 * 256);
-            fs.add(clazz.getDeclaredField(row.getCell(j).getStringCellValue()));
-        }
-        int mx = sheet.getLastRowNum();
-        for (int i = 1; i <= mx; i++) {
-            T t = clazz.newInstance();
-            row = sheet.getRow(i);
+    public static <T> List<T> getListFromExcel(String filePath, Class<T> clazz) {
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            HSSFWorkbook workbook = new HSSFWorkbook(fis);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            List<T> res = new ArrayList<>();
+            Field[] fields = clazz.getDeclaredFields();
+            List<Field> fs = new ArrayList<>();
+            int len = fields.length;
+            HSSFRow row = sheet.getRow(0);
             for (int j = 0; j < len; j++) {
-                Field field = fs.get(j);
-                Class<?> fieldType = field.getType();
-                HSSFCell cell = row.getCell(j);
-                String fieldName = fields[j].getName();
-                char c = fieldName.charAt(0);
-                if (c >= 'a' && c <= 'z')
-                    c += 'A' - 'a';
-                String methodName = "set" + c + fieldName.substring(1);
-                Method method = clazz.getMethod(methodName, fieldType);
-                if (fieldType == Integer.class || fieldType == int.class)
-                    method.invoke(t, (int) cell.getNumericCellValue());
-                else if (fieldType == Long.class || fieldType == long.class)
-                    method.invoke(t, (long) cell.getNumericCellValue());
-                else if (fieldType == Double.class || fieldType == double.class)
-                    method.invoke(t, cell.getNumericCellValue());
-                else if (fieldType == Date.class)
-                    method.invoke(t, cell.getDateCellValue());
-                else if (fieldType == Boolean.class)
-                    method.invoke(t, cell.getBooleanCellValue());
-                else
-                    method.invoke(t, cell.getStringCellValue());
+                sheet.setColumnWidth(j, 15 * 256);
+                fs.add(clazz.getDeclaredField(row.getCell(j).getStringCellValue()));
             }
-            res.add(t);
+            int mx = sheet.getLastRowNum();
+            for (int i = 1; i <= mx; i++) {
+                T t = clazz.newInstance();
+                row = sheet.getRow(i);
+                for (int j = 0; j < len; j++) {
+                    Field field = fs.get(j);
+                    Class<?> fieldType = field.getType();
+                    HSSFCell cell = row.getCell(j);
+                    String fieldName = fields[j].getName();
+                    char c = fieldName.charAt(0);
+                    if (c >= 'a' && c <= 'z')
+                        c += 'A' - 'a';
+                    String methodName = "set" + c + fieldName.substring(1);
+                    Method method = clazz.getMethod(methodName, fieldType);
+                    if (fieldType == Integer.class || fieldType == int.class)
+                        method.invoke(t, (int) cell.getNumericCellValue());
+                    else if (fieldType == Long.class || fieldType == long.class)
+                        method.invoke(t, (long) cell.getNumericCellValue());
+                    else if (fieldType == Double.class || fieldType == double.class)
+                        method.invoke(t, cell.getNumericCellValue());
+                    else if (fieldType == Date.class)
+                        method.invoke(t, cell.getDateCellValue());
+                    else if (fieldType == Boolean.class)
+                        method.invoke(t, cell.getBooleanCellValue());
+                    else
+                        method.invoke(t, cell.getStringCellValue());
+                }
+                res.add(t);
+            }
+            workbook.close();
+            fis.close();
+            return res;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        workbook.close();
-        fis.close();
-        return res;
     }
 
     public static void createFile(String filePath, String ... sheets) throws Exception {
