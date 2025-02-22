@@ -24,7 +24,7 @@ public class ExcelController {
         ServletOutputStream os = resp.getOutputStream();
         String fileName = "users.xlsx";
         resp.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-        PoiUtil.writeListToOutputStream(os, users, TpSysUser.class);
+        PoiUtil.writeListToOS(os, users, TpSysUser.class);
         os.flush();
         os.close();
         return "导出成功!";

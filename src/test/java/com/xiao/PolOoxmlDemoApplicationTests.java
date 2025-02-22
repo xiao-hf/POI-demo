@@ -14,8 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,10 +51,15 @@ class PolOoxmlDemoApplicationTests {
         String filePath = "D:\\bak\\mine.xlsx";
         List<TpSysUser> users = tpSysUserMapper.selectOrderByExpireTimeDesc();
         long start = System.currentTimeMillis();
-        PoiUtil.saveListToExcel(filePath, users, TpSysUser.class);
+        FileOutputStream fos = new FileOutputStream(filePath);
+        PoiUtil.writeListToOS(fos, users, TpSysUser.class);
+        fos.flush();
+        fos.close();
         long end = System.currentTimeMillis();
         System.out.println("耗时: " + (end - start) + "ms");
-        List<TpSysUser> listFromExcel = PoiUtil.getListFromExcel(filePath, TpSysUser.class);
+        InputStream fis = Files.newInputStream(Paths.get(filePath));
+        List<TpSysUser> listFromExcel = PoiUtil.getListFromIS(fis, TpSysUser.class);
+        fis.close();
         System.out.println(listFromExcel);
     }
 
@@ -102,7 +110,6 @@ class PolOoxmlDemoApplicationTests {
             res.add(t);
         }
         workbook.close();
-        fis.close();
         return res;
     }
 

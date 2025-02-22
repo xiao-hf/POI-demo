@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class PoiUtil {
 
-    public static <T> void writeListToOutputStream(OutputStream fos, List<T> list, Class<T> clazz) {
+    public static <T> void writeListToOS(OutputStream fos, List<T> list, Class<T> clazz) {
         try {
             HSSFWorkbook workbook = new HSSFWorkbook();
             CellStyle headerStyle = workbook.createCellStyle();
@@ -64,59 +65,8 @@ public class PoiUtil {
         }
     }
 
-    public static <T> void saveListToExcel(String filePath, List<T> list, Class<T> clazz) {
+    public static <T> List<T> getListFromIS(InputStream fis, Class<T> clazz) {
         try {
-            FileOutputStream fos = new FileOutputStream(filePath);
-            HSSFWorkbook workbook = new HSSFWorkbook();
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-            Font headerFont = workbook.createFont();
-            headerFont.setBold(true);
-            headerStyle.setFont(headerFont);
-            HSSFSheet sheet = workbook.createSheet(clazz.getSimpleName());
-            Field[] fields = clazz.getDeclaredFields();
-            HSSFRow row = sheet.createRow(0);
-            int[] maxWidths = new int[fields.length];
-            for (int j = 0; j < fields.length; j++) {
-                HSSFCell cell = row.createCell(j);
-                cell.setCellStyle(headerStyle);
-                String fieldName = fields[j].getName();
-                cell.setCellValue(fieldName);
-                maxWidths[j] = fieldName.getBytes().length * 256 + 512;
-            }
-            for (int i = 1; i <= list.size(); i++) {
-                T t = list.get(i - 1);
-                row = sheet.createRow(i);
-                for (int j = 0; j < fields.length; j++) {
-                    Field field = fields[j];
-                    String name = field.getName();
-                    char c = name.charAt(0);
-                    c += c >= 'a' && c <= 'z' ? 'A' - 'a' : 0;
-                    name = "get" + c + name.substring(1);
-                    Method method = clazz.getMethod(name);
-                    Object val = method.invoke(t);
-                    HSSFCell cell = row.createCell(j);
-                    setVal(workbook, cell, val);
-                    if (val != null)
-                        maxWidths[j] = Math.max(maxWidths[j], val.toString().getBytes().length * 256 + 512);
-                }
-            }
-            for (int i = 0; i < fields.length; i++)
-                sheet.setColumnWidth(i, Math.max(Math.min(maxWidths[i], 255 * 256), 10 * 256));
-            workbook.write(fos);
-            workbook.close();
-            fos.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static <T> List<T> getListFromExcel(String filePath, Class<T> clazz) {
-        try {
-            FileInputStream fis = new FileInputStream(filePath);
             HSSFWorkbook workbook = new HSSFWorkbook(fis);
             HSSFSheet sheet = workbook.getSheetAt(0);
             List<T> res = new ArrayList<>();
