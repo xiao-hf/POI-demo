@@ -3,7 +3,6 @@ package com.xiao.utils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class PoiUtil {
+public class ExcelUtil {
 
     public static <T> void writeListToOS(OutputStream fos, List<T> list, Class<T> clazz) {
         try {

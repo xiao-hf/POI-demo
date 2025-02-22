@@ -2,7 +2,7 @@ package com.xiao.controller;
 
 import com.xiao.domain.TpSysUser;
 import com.xiao.mapper.TpSysUserMapper;
-import com.xiao.utils.PoiUtil;
+import com.xiao.utils.ExcelUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +24,7 @@ public class ExcelController {
         ServletOutputStream os = resp.getOutputStream();
         String fileName = "users.xlsx";
         resp.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-        PoiUtil.writeListToOS(os, users, TpSysUser.class);
+        ExcelUtil.writeListToOS(os, users, TpSysUser.class);
         os.flush();
         os.close();
         return "导出成功!";
