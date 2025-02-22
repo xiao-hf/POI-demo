@@ -45,8 +45,7 @@ public class PoiUtil {
                     Field field = fields[j];
                     String name = field.getName();
                     char c = name.charAt(0);
-                    if (c >= 'a' && c <= 'z')
-                        c += 'A' - 'a';
+                    c += c >= 'a' && c <= 'z' ? 'A' - 'a' : 0;
                     name = "get" + c + name.substring(1);
                     Method method = clazz.getMethod(name);
                     Object val = method.invoke(t);
@@ -90,8 +89,7 @@ public class PoiUtil {
                     HSSFCell cell = row.getCell(j);
                     String fieldName = fields[j].getName();
                     char c = fieldName.charAt(0);
-                    if (c >= 'a' && c <= 'z')
-                        c += 'A' - 'a';
+                    c += c >= 'a' && c <= 'z' ? 'A' - 'a' : 0;
                     String methodName = "set" + c + fieldName.substring(1);
                     Method method = clazz.getMethod(methodName, fieldType);
                     if (fieldType == Integer.class || fieldType == int.class)
