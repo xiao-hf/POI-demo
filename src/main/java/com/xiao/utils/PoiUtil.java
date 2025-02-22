@@ -1,7 +1,7 @@
 package com.xiao.utils;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,44 +15,56 @@ import java.util.List;
 
 public class PoiUtil {
 
-    public static void createFile(String filePath, String ... sheets) throws Exception {
-        FileOutputStream fos = new FileOutputStream(filePath);
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        for (String sheet : sheets)
-            workbook.createSheet(sheet);
-        workbook.write(fos);
-        workbook.close();
-        fos.close();
-    }
-
-    public static <T> void saveListToExcel(String filePath, List<T> list, Class<T> clazz) throws Exception {
-        FileOutputStream fos = new FileOutputStream(filePath);
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet(clazz.getName());
-        Field[] fields = clazz.getDeclaredFields();
-        HSSFRow row = sheet.createRow(0);
-        for (int j = 0; j < fields.length; j++) {
-            HSSFCell cell = row.createCell(j);
-            cell.setCellValue(fields[j].getName());
-        }
-        for (int i = 1; i <= list.size(); i++) {
-            T t = list.get(i - 1);
-            row = sheet.createRow(i);
+    public static <T> void saveListToExcel(String filePath, List<T> list) {
+        try {
+            Class<?> clazz = list.get(0).getClass();
+            FileOutputStream fos = new FileOutputStream(filePath);
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+            HSSFSheet sheet = workbook.createSheet(clazz.getSimpleName());
+            Field[] fields = clazz.getDeclaredFields();
+            HSSFRow row = sheet.createRow(0);
+            int[] maxWidths = new int[fields.length];
             for (int j = 0; j < fields.length; j++) {
-                Field field = fields[j];
-                String name = field.getName();
-                char c = name.charAt(0);
-                if (c >= 'a' && c <= 'z')
-                    c += 'A' - 'a';
-                name = "get" + c + name.substring(1);
-                Method method = clazz.getMethod(name);
-                Object val = method.invoke(t);
-                setVal(workbook, row.createCell(j), val);
+                HSSFCell cell = row.createCell(j);
+                cell.setCellStyle(headerStyle);
+                String fieldName = fields[j].getName();
+                cell.setCellValue(fieldName);
+                maxWidths[j] = fieldName.getBytes().length * 256 + 512;
             }
+            for (int i = 1; i <= list.size(); i++) {
+                T t = list.get(i - 1);
+                row = sheet.createRow(i);
+                for (int j = 0; j < fields.length; j++) {
+                    Field field = fields[j];
+                    String name = field.getName();
+                    char c = name.charAt(0);
+                    if (c >= 'a' && c <= 'z')
+                        c += 'A' - 'a';
+                    name = "get" + c + name.substring(1);
+                    Method method = clazz.getMethod(name);
+                    Object val = method.invoke(t);
+                    HSSFCell cell = row.createCell(j);
+                    setVal(workbook, cell, val);
+                    if (val != null)
+                        maxWidths[j] = Math.max(maxWidths[j], val.toString().getBytes().length * 256 + 512);
+                }
+            }
+            for (int i = 0; i < fields.length; i++)
+                sheet.setColumnWidth(i, Math.max(Math.min(maxWidths[i], 255 * 256), 10 * 256));
+            workbook.write(fos);
+            workbook.close();
+            fos.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        workbook.write(fos);
-        workbook.close();
-        fos.close();
     }
 
     public static <T> List<T> getListFromExcel(String filePath, Class<T> clazz) throws Exception {
@@ -65,6 +77,7 @@ public class PoiUtil {
         int len = fields.length;
         HSSFRow row = sheet.getRow(0);
         for (int j = 0; j < len; j++) {
+            sheet.setColumnWidth(j, 15 * 256);
             fs.add(clazz.getDeclaredField(row.getCell(j).getStringCellValue()));
         }
         int mx = sheet.getLastRowNum();
@@ -101,22 +114,30 @@ public class PoiUtil {
         return res;
     }
 
+    public static void createFile(String filePath, String ... sheets) throws Exception {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        for (String sheet : sheets)
+            workbook.createSheet(sheet);
+        workbook.write(fos);
+        workbook.close();
+        fos.close();
+    }
+
     private static void setVal(HSSFWorkbook workbook, HSSFCell cell, Object val) {
+        CellStyle cellStyle = getDataStyle(workbook);
+        cell.setCellStyle(cellStyle);
         if (val == null)
             return;
-        HSSFCellStyle cellStyle = workbook.createCellStyle();
         HSSFCreationHelper creationHelper = workbook.getCreationHelper();
         if (val instanceof Date) {
             cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
-            cell.setCellStyle(cellStyle);
             cell.setCellValue((Date) val);
         } else if (val instanceof LocalDateTime) {
             cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
-            cell.setCellStyle(cellStyle);
             cell.setCellValue((LocalDateTime) val);
         } else if (val instanceof Calendar) {
             cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd"));
-            cell.setCellStyle(cellStyle);
             cell.setCellValue((Calendar) val);
         } else if (val instanceof Integer) {
             cell.setCellValue((int) val);
@@ -124,9 +145,17 @@ public class PoiUtil {
             cell.setCellValue((long) val);
         } else if (val instanceof Double) {
             cell.setCellValue((double) val);
+        } else if (val instanceof Boolean) {
+            cell.setCellValue((boolean) val);
         } else {
             cell.setCellValue(val.toString());
         }
     }
 
+    private static CellStyle getDataStyle(HSSFWorkbook workbook) {
+        CellStyle dataStyle = workbook.createCellStyle();
+        dataStyle.setAlignment(HorizontalAlignment.CENTER);
+        dataStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        return dataStyle;
+    }
 }

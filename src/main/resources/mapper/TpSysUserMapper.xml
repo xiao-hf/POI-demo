@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.mapper.TpSysUserMapper">
+  <resultMap id="BaseResultMap" type="com.xiao.domain.TpSysUser">
+    <!--@mbg.generated-->
+    <!--@Table tp_sys_user-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="alarm_api_url" jdbcType="VARCHAR" property="alarmApiUrl" />
+    <result column="alarm_kafka_server" jdbcType="VARCHAR" property="alarmKafkaServer" />
+    <result column="alarm_kafka_topic" jdbcType="VARCHAR" property="alarmKafkaTopic" />
+    <result column="alarm_put_type" jdbcType="VARCHAR" property="alarmPutType" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="limit" jdbcType="INTEGER" property="limit" />
+    <result column="alarm_status" jdbcType="BIT" property="alarmStatus" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+    <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+    <result column="sys_ip" jdbcType="VARCHAR" property="sysIp" />
+    <result column="dep_no" jdbcType="VARCHAR" property="depNo" />
+    <result column="dep_name" jdbcType="VARCHAR" property="depName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, account, `name`, phone, alarm_api_url, alarm_kafka_server, alarm_kafka_topic, 
+    alarm_put_type, remark, `limit`, alarm_status, `enable`, token, expire_time, pass_word, 
+    sys_ip, dep_no, dep_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from tp_sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from tp_sys_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.xiao.domain.TpSysUser">
+    <!--@mbg.generated-->
+    insert into tp_sys_user (id, account, `name`, 
+      phone, alarm_api_url, alarm_kafka_server, 
+      alarm_kafka_topic, alarm_put_type, remark, 
+      `limit`, alarm_status, `enable`, 
+      token, expire_time, pass_word, 
+      sys_ip, dep_no, dep_name
+      )
+    values (#{id,jdbcType=BIGINT}, #{account,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{alarmApiUrl,jdbcType=VARCHAR}, #{alarmKafkaServer,jdbcType=VARCHAR}, 
+      #{alarmKafkaTopic,jdbcType=VARCHAR}, #{alarmPutType,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{limit,jdbcType=INTEGER}, #{alarmStatus,jdbcType=BIT}, #{enable,jdbcType=BIT}, 
+      #{token,jdbcType=VARCHAR}, #{expireTime,jdbcType=TIMESTAMP}, #{passWord,jdbcType=VARCHAR}, 
+      #{sysIp,jdbcType=VARCHAR}, #{depNo,jdbcType=VARCHAR}, #{depName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiao.domain.TpSysUser">
+    <!--@mbg.generated-->
+    insert into tp_sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="alarmApiUrl != null">
+        alarm_api_url,
+      </if>
+      <if test="alarmKafkaServer != null">
+        alarm_kafka_server,
+      </if>
+      <if test="alarmKafkaTopic != null">
+        alarm_kafka_topic,
+      </if>
+      <if test="alarmPutType != null">
+        alarm_put_type,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="limit != null">
+        `limit`,
+      </if>
+      <if test="alarmStatus != null">
+        alarm_status,
+      </if>
+      <if test="enable != null">
+        `enable`,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="passWord != null">
+        pass_word,
+      </if>
+      <if test="sysIp != null">
+        sys_ip,
+      </if>
+      <if test="depNo != null">
+        dep_no,
+      </if>
+      <if test="depName != null">
+        dep_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmApiUrl != null">
+        #{alarmApiUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmKafkaServer != null">
+        #{alarmKafkaServer,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmKafkaTopic != null">
+        #{alarmKafkaTopic,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPutType != null">
+        #{alarmPutType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="limit != null">
+        #{limit,jdbcType=INTEGER},
+      </if>
+      <if test="alarmStatus != null">
+        #{alarmStatus,jdbcType=BIT},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=BIT},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passWord != null">
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="sysIp != null">
+        #{sysIp,jdbcType=VARCHAR},
+      </if>
+      <if test="depNo != null">
+        #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null">
+        #{depName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiao.domain.TpSysUser">
+    <!--@mbg.generated-->
+    update tp_sys_user
+    <set>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmApiUrl != null">
+        alarm_api_url = #{alarmApiUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmKafkaServer != null">
+        alarm_kafka_server = #{alarmKafkaServer,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmKafkaTopic != null">
+        alarm_kafka_topic = #{alarmKafkaTopic,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPutType != null">
+        alarm_put_type = #{alarmPutType,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="limit != null">
+        `limit` = #{limit,jdbcType=INTEGER},
+      </if>
+      <if test="alarmStatus != null">
+        alarm_status = #{alarmStatus,jdbcType=BIT},
+      </if>
+      <if test="enable != null">
+        `enable` = #{enable,jdbcType=BIT},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passWord != null">
+        pass_word = #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="sysIp != null">
+        sys_ip = #{sysIp,jdbcType=VARCHAR},
+      </if>
+      <if test="depNo != null">
+        dep_no = #{depNo,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null">
+        dep_name = #{depName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiao.domain.TpSysUser">
+    <!--@mbg.generated-->
+    update tp_sys_user
+    set account = #{account,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      alarm_api_url = #{alarmApiUrl,jdbcType=VARCHAR},
+      alarm_kafka_server = #{alarmKafkaServer,jdbcType=VARCHAR},
+      alarm_kafka_topic = #{alarmKafkaTopic,jdbcType=VARCHAR},
+      alarm_put_type = #{alarmPutType,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      `limit` = #{limit,jdbcType=INTEGER},
+      alarm_status = #{alarmStatus,jdbcType=BIT},
+      `enable` = #{enable,jdbcType=BIT},
+      token = #{token,jdbcType=VARCHAR},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      pass_word = #{passWord,jdbcType=VARCHAR},
+      sys_ip = #{sysIp,jdbcType=VARCHAR},
+      dep_no = #{depNo,jdbcType=VARCHAR},
+      dep_name = #{depName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2025-02-22-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tp_sys_user
+  </select>
+</mapper>

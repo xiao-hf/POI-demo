@@ -1,9 +1,11 @@
 package com.xiao;
 
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xiao.domain.TpSysUser;
 import com.xiao.domain.User;
+import com.xiao.mapper.TpSysUserMapper;
 import com.xiao.mapper.UserMapper;
+import com.xiao.utils.PoiUtil;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
@@ -37,11 +39,16 @@ class PolOoxmlDemoApplicationTests {
         System.out.println(id);
     }
 
+    @Resource
+    TpSysUserMapper tpSysUserMapper;
+
     @Test
     void main() throws Exception {
-        String filePath = "D:\\bak\\test1.xls";
-        List<User> users = userMapper.selectList(new LambdaQueryWrapper<>());
-        saveListToExcel(filePath, users, User.class);
+        String filePath = "D:\\bak\\mine.xls";
+        List<TpSysUser> users = tpSysUserMapper.selectAll();
+        PoiUtil.saveListToExcel(filePath, users);
+        List<TpSysUser> listFromExcel = PoiUtil.getListFromExcel(filePath, TpSysUser.class);
+        System.out.println(listFromExcel);
     }
 
     @Test

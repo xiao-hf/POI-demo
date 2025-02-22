@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.mapper.AlarmInfoOldOneMapper">
+  <resultMap id="BaseResultMap" type="com.xiao.domain.AlarmInfoOldOne">
+    <!--@mbg.generated-->
+    <!--@Table alarm_info_old_one-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="alarm_id" jdbcType="VARCHAR" property="alarmId" />
+    <result column="alarm_source" jdbcType="VARCHAR" property="alarmSource" />
+    <result column="alarm_device_id" jdbcType="VARCHAR" property="alarmDeviceId" />
+    <result column="alarm_device_code" jdbcType="VARCHAR" property="alarmDeviceCode" />
+    <result column="alarm_device_name" jdbcType="VARCHAR" property="alarmDeviceName" />
+    <result column="alarm_person_id" jdbcType="VARCHAR" property="alarmPersonId" />
+    <result column="alarm_person_code" jdbcType="VARCHAR" property="alarmPersonCode" />
+    <result column="alarm_person_no" jdbcType="VARCHAR" property="alarmPersonNo" />
+    <result column="alarm_person_name" jdbcType="VARCHAR" property="alarmPersonName" />
+    <result column="alarm_person_url" jdbcType="VARCHAR" property="alarmPersonUrl" />
+    <result column="alarm_small_img" jdbcType="VARCHAR" property="alarmSmallImg" />
+    <result column="alarm_big_img" jdbcType="VARCHAR" property="alarmBigImg" />
+    <result column="similarity_degree" jdbcType="DOUBLE" property="similarityDegree" />
+    <result column="original_url" jdbcType="VARCHAR" property="originalUrl" />
+    <result column="alarm_time" jdbcType="TIMESTAMP" property="alarmTime" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, alarm_id, alarm_source, alarm_device_id, alarm_device_code, alarm_device_name, 
+    alarm_person_id, alarm_person_code, alarm_person_no, alarm_person_name, alarm_person_url, 
+    alarm_small_img, alarm_big_img, similarity_degree, original_url, alarm_time, create_date, 
+    create_user_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from alarm_info_old_one
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from alarm_info_old_one
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xiao.domain.AlarmInfoOldOne">
+    <!--@mbg.generated-->
+    insert into alarm_info_old_one (id, alarm_id, alarm_source, 
+      alarm_device_id, alarm_device_code, alarm_device_name, 
+      alarm_person_id, alarm_person_code, alarm_person_no, 
+      alarm_person_name, alarm_person_url, alarm_small_img, 
+      alarm_big_img, similarity_degree, original_url, 
+      alarm_time, create_date, create_user_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{alarmId,jdbcType=VARCHAR}, #{alarmSource,jdbcType=VARCHAR}, 
+      #{alarmDeviceId,jdbcType=VARCHAR}, #{alarmDeviceCode,jdbcType=VARCHAR}, #{alarmDeviceName,jdbcType=VARCHAR}, 
+      #{alarmPersonId,jdbcType=VARCHAR}, #{alarmPersonCode,jdbcType=VARCHAR}, #{alarmPersonNo,jdbcType=VARCHAR}, 
+      #{alarmPersonName,jdbcType=VARCHAR}, #{alarmPersonUrl,jdbcType=VARCHAR}, #{alarmSmallImg,jdbcType=VARCHAR}, 
+      #{alarmBigImg,jdbcType=VARCHAR}, #{similarityDegree,jdbcType=DOUBLE}, #{originalUrl,jdbcType=VARCHAR}, 
+      #{alarmTime,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiao.domain.AlarmInfoOldOne">
+    <!--@mbg.generated-->
+    insert into alarm_info_old_one
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="alarmId != null">
+        alarm_id,
+      </if>
+      <if test="alarmSource != null">
+        alarm_source,
+      </if>
+      <if test="alarmDeviceId != null">
+        alarm_device_id,
+      </if>
+      <if test="alarmDeviceCode != null">
+        alarm_device_code,
+      </if>
+      <if test="alarmDeviceName != null">
+        alarm_device_name,
+      </if>
+      <if test="alarmPersonId != null">
+        alarm_person_id,
+      </if>
+      <if test="alarmPersonCode != null">
+        alarm_person_code,
+      </if>
+      <if test="alarmPersonNo != null">
+        alarm_person_no,
+      </if>
+      <if test="alarmPersonName != null">
+        alarm_person_name,
+      </if>
+      <if test="alarmPersonUrl != null">
+        alarm_person_url,
+      </if>
+      <if test="alarmSmallImg != null">
+        alarm_small_img,
+      </if>
+      <if test="alarmBigImg != null">
+        alarm_big_img,
+      </if>
+      <if test="similarityDegree != null">
+        similarity_degree,
+      </if>
+      <if test="originalUrl != null">
+        original_url,
+      </if>
+      <if test="alarmTime != null">
+        alarm_time,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmId != null">
+        #{alarmId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSource != null">
+        #{alarmSource,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceId != null">
+        #{alarmDeviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceCode != null">
+        #{alarmDeviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceName != null">
+        #{alarmDeviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonId != null">
+        #{alarmPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonCode != null">
+        #{alarmPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonNo != null">
+        #{alarmPersonNo,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonName != null">
+        #{alarmPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonUrl != null">
+        #{alarmPersonUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSmallImg != null">
+        #{alarmSmallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmBigImg != null">
+        #{alarmBigImg,jdbcType=VARCHAR},
+      </if>
+      <if test="similarityDegree != null">
+        #{similarityDegree,jdbcType=DOUBLE},
+      </if>
+      <if test="originalUrl != null">
+        #{originalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmTime != null">
+        #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiao.domain.AlarmInfoOldOne">
+    <!--@mbg.generated-->
+    update alarm_info_old_one
+    <set>
+      <if test="alarmId != null">
+        alarm_id = #{alarmId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSource != null">
+        alarm_source = #{alarmSource,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceId != null">
+        alarm_device_id = #{alarmDeviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceCode != null">
+        alarm_device_code = #{alarmDeviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmDeviceName != null">
+        alarm_device_name = #{alarmDeviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonId != null">
+        alarm_person_id = #{alarmPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonCode != null">
+        alarm_person_code = #{alarmPersonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonNo != null">
+        alarm_person_no = #{alarmPersonNo,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonName != null">
+        alarm_person_name = #{alarmPersonName,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmPersonUrl != null">
+        alarm_person_url = #{alarmPersonUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmSmallImg != null">
+        alarm_small_img = #{alarmSmallImg,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmBigImg != null">
+        alarm_big_img = #{alarmBigImg,jdbcType=VARCHAR},
+      </if>
+      <if test="similarityDegree != null">
+        similarity_degree = #{similarityDegree,jdbcType=DOUBLE},
+      </if>
+      <if test="originalUrl != null">
+        original_url = #{originalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="alarmTime != null">
+        alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiao.domain.AlarmInfoOldOne">
+    <!--@mbg.generated-->
+    update alarm_info_old_one
+    set alarm_id = #{alarmId,jdbcType=VARCHAR},
+      alarm_source = #{alarmSource,jdbcType=VARCHAR},
+      alarm_device_id = #{alarmDeviceId,jdbcType=VARCHAR},
+      alarm_device_code = #{alarmDeviceCode,jdbcType=VARCHAR},
+      alarm_device_name = #{alarmDeviceName,jdbcType=VARCHAR},
+      alarm_person_id = #{alarmPersonId,jdbcType=VARCHAR},
+      alarm_person_code = #{alarmPersonCode,jdbcType=VARCHAR},
+      alarm_person_no = #{alarmPersonNo,jdbcType=VARCHAR},
+      alarm_person_name = #{alarmPersonName,jdbcType=VARCHAR},
+      alarm_person_url = #{alarmPersonUrl,jdbcType=VARCHAR},
+      alarm_small_img = #{alarmSmallImg,jdbcType=VARCHAR},
+      alarm_big_img = #{alarmBigImg,jdbcType=VARCHAR},
+      similarity_degree = #{similarityDegree,jdbcType=DOUBLE},
+      original_url = #{originalUrl,jdbcType=VARCHAR},
+      alarm_time = #{alarmTime,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_user_id = #{createUserId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
