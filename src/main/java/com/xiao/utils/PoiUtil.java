@@ -15,9 +15,8 @@ import java.util.List;
 
 public class PoiUtil {
 
-    public static <T> void saveListToExcel(String filePath, List<T> list) {
+    public static <T> void saveListToExcel(String filePath, List<T> list, Class<T> clazz) {
         try {
-            Class<?> clazz = list.get(0).getClass();
             FileOutputStream fos = new FileOutputStream(filePath);
             HSSFWorkbook workbook = new HSSFWorkbook();
             CellStyle headerStyle = workbook.createCellStyle();

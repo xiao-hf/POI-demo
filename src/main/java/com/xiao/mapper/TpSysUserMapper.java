@@ -7,6 +7,7 @@ import com.xiao.domain.TpSysUser;
 public interface TpSysUserMapper {
     List<TpSysUser> selectAll();
 
+    List<TpSysUser> selectOrderByExpireTimeDesc();
 
     int deleteByPrimaryKey(Long id);
 

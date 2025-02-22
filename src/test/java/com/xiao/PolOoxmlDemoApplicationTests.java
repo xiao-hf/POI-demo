@@ -44,9 +44,13 @@ class PolOoxmlDemoApplicationTests {
 
     @Test
     void main() throws Exception {
-        String filePath = "D:\\bak\\mine.xls";
-        List<TpSysUser> users = tpSysUserMapper.selectAll();
-        PoiUtil.saveListToExcel(filePath, users);
+        //String filePath = "D:\\bak\\mine.xlsx";
+        String filePath = "D:\\bak\\mine.xlsx";
+        List<TpSysUser> users = tpSysUserMapper.selectOrderByExpireTimeDesc();
+        long start = System.currentTimeMillis();
+        PoiUtil.saveListToExcel(filePath, users, TpSysUser.class);
+        long end = System.currentTimeMillis();
+        System.out.println("耗时: " + (end - start) + "ms");
         List<TpSysUser> listFromExcel = PoiUtil.getListFromExcel(filePath, TpSysUser.class);
         System.out.println(listFromExcel);
     }
